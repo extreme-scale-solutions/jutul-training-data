@@ -3,7 +3,12 @@ authors = ["Ziyi Yin"]
 
 [deps]
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
+GR = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 JutulDarcyRules = "41f0c4f5-9bdd-4ef1-8c3a-d454dff2d562"
+LoggingExtras = "e6f89c97-d47a-5376-807f-9c37f3926c36"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 SegyIO = "157a0f19-4d44-4de5-a0d0-07e2f0ac4dfa"
