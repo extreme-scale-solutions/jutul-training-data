@@ -21,9 +21,9 @@ ln -s /global/cfs/cdirs/m3863/mark/slim.gatech.edu .
 
 ## Physical system
 
-All simulation data is based on subsets of the Compass model, which is a grid of 1911x2730x341 cells of size 25m*25m*6m.
+All simulation data is based on subsets of the Compass model, which is a grid of 1911x2730x341 cells of size 25m\*25m\*6m.
 We select a random 2 km² patch of land from this model, and take that subset with a fixed depth, producing a 160³ tensor.
-Each cell in this tensor is a chunk of land, whose size is 25*25*6 meters.
+Each cell in this tensor is a chunk of land, whose size is 25\*25\*6 meters.
 This 160³ tensor can then be simulated as-is (which takes about 1 hour), or downsampled to 80³, 40³ or 20³ and then we
 simulate the downsampled system.  The smaller scales are very useful for development and testing.
 
@@ -52,8 +52,8 @@ This generates 4000 inputs for each data size, and puts each in their own datase
 The script `simulate-batch.jl` runs the actual physics simulation on one or more input folders, and adds these files to the existing data dir:
 
 * outputs.jld2 contains all of the stuff in meta.json, plus arrays of saturation and pressure output tensors.
-* after*days.png: renderings of the system state at various timestamps
-* $seed.mp4: a video file of the after*days.png frames
+* after\*days.png: renderings of the system state at various timestamps
+* $seed.mp4: a video file of the after\*days.png frames
 
 ```
 sbatch --account=$ACCOUNT --constraint=cpu --nodes=1 --qos=regular --time=12:00:00 ./simulate-batch-10.sh ~/PSCRATCH/v5/20³
@@ -66,6 +66,26 @@ Make sure ACCOUNT is set to your billing account id; ours is m3863.
 
 We run 10 simulations in parallel for most of the data sizes, as this is a good level of parallelism for this system.
 We run 6 simulations of the largest scale, so that they won't run out of memory.
+
+
+# Other commands
+
+These are commands I found useful while generating the full dataset.
+
+```
+# set up julia environment
+module use $CFS/m3863/mark/lmod
+module load julia/1.8.5-mark
+# see how many finished simulations are in cfs
+cd ~/CFS/training-data/training-samples/v5; for SIZE in 20 40 80 160; do ls ${SIZE}³ | wc -l; done
+# spawn a simulation job for a specified size
+cd ~/src/proxy-example; sbatch --account=m3863 --constraint=cpu --nodes=1 --qos=regular --time=12:00:00 ./simulate-batch-10.sh ~/PSCRATCH/v5/20³
+cd ~/src/proxy-example; sbatch --account=m3863 --constraint=cpu --nodes=1 --qos=regular --time=12:00:00 ./simulate-batch-10.sh ~/PSCRATCH/v5/40³
+cd ~/src/proxy-example; sbatch --account=m3863 --constraint=cpu --nodes=1 --qos=regular --time=12:00:00 ./simulate-batch-10.sh ~/PSCRATCH/v5/80³
+cd ~/src/proxy-example; sbatch --account=m3863 --constraint=cpu --nodes=1 --qos=regular --time=12:00:00 ./simulate-batch-6.sh ~/PSCRATCH/v5/160³
+# move finished things from pscratch to cfs
+cd ~/PSCRATCH/v5; for SIZE in 20 40 80 160; do echo SIZE=$SIZE; cd ${SIZE}³; ls | while read THING; do if test -f $THING/after40177days.png; then echo $THING; mv $THING /global/homes/i/infinoid/CFS/training-data/training-samples/v5/${SIZE}³; fi; done; cd ..; done
+```
 
 # Troubleshooting
 

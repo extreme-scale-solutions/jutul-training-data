@@ -1,4 +1,4 @@
-### Read the Compass slice from SLIM website and take out the 2D slice
+### Read pre-generated inputs and run simulations
 ## Please refer to the details in the MIT license of this repository and in the license of the Compass model
 ## author: Ziyi Yin (ziyi.yin@gatech.edu)
 ## ruined by: Mark Glines (mark@extreme-scale.com)
@@ -23,7 +23,6 @@ using Statistics
 using JutulDarcyRules
 import Random
 import JLD2
-import JSON
 
 include(srcdir("utils.jl"))
 
